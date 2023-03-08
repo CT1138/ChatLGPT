@@ -1,9 +1,14 @@
-import Modules.Models as Models, Modules.Media as Media, Modules.Messages as Messages, Modules.Chat as Chat,Initialize, discord, json, csv
+import Modules.Models as Models, Modules.Media as Media, Modules.Messages as Messages, Modules.Chat as Chat,Initialize, discord, json, sys
 from discord import option
-with open("./Data/Token.json", "r") as f:
-    data = json.load(f)
-with open('./Data/Models.json', 'r') as f:
-    model_data = json.load(f)
+try:
+  with open("./Data/Token.json", "r") as f:
+      data = json.load(f)
+  with open('./Data/Models.json', 'r') as f:
+      model_data = json.load(f)
+except Exception as e:
+   print(e)
+   sys.exit()
+
 AImodel = [model['id'] for model in model_data]
 
 
