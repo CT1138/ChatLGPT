@@ -1,5 +1,7 @@
-import Modules.Models as Models, Modules.Media as Media, Modules.Messages as Messages, Modules.Chat as Chat,Initialize, discord, json, sys
+import Modules.Models as Models, Modules.Reddit.Video as Video, Modules.Reddit.Images as Image, Modules.Messages as Messages, Modules.Chat as Chat,Initialize, discord, json, sys
 from discord import option
+
+# Searches for and opens the data files, the program will stop if they do not exist
 try:
   with open("./Data/Token.json", "r") as f:
       data = json.load(f)
@@ -38,7 +40,7 @@ async def chat(ctx: discord.ApplicationContext, query: str):
 @client.slash_command(description="OpenAI chatbot Integration.")
 @option("query", description="Your message to the bot")
 async def gpt(ctx: discord.ApplicationContext, query: str):
-  Models.generate_response(ctx, query)
+  await ctx.defer(); await ctx.send(Models.generate_response(query))
 
 #/info <model>
 @client.slash_command(description="Info on the AI models compatible with /gpt.")
@@ -57,14 +59,14 @@ async def draw(ctx: discord.ApplicationContext, query: str):
 @option("subreddit", description="What subreddit to scrape from? (case sensitive)")
 @option("quantity", description="How many images to download? (Maximum 6)")
 async def images(ctx: discord.ApplicationContext, subreddit: str, quantity: int):
-  await Media.images(ctx, subreddit, quantity)
+  await Image.images(ctx, subreddit, quantity)
 
 #/reddit video <subreddit> <quantity>
 @client.slash_command(description="Pulls a video from a subreddit.")
 @option("subreddit", description="What subreddit to scrape from? (case sensitive)")
 @option("quantity", description="How many videos to download? (Maximum 6)")
 async def videos(ctx: discord.ApplicationContext, subreddit: str, quantity: int):
-  await Media.reddit_video_main(ctx, subreddit, quantity)
+  await Video.reddit_video_main(ctx, subreddit, quantity)
 
 #/purge
 @client.slash_command(description="Clears all messages.")
