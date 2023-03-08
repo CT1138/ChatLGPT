@@ -1,0 +1,47 @@
+[
+    {
+      "name": "Davinci",
+      "description": "A full-scale API, suitable for a wide range of use cases; The most advanced of the platform",
+      "id": "text-davinci-003",
+      "type": "text",
+      "version": "003",
+      "url": "https://api.openai.com/v1/models/text-davinci-003",
+      "cost": "$0.02"
+    },
+    {
+      "name": "Davinci",
+      "description": "A full-scale API, suitable for a wide range of use cases",
+      "id": "text-davinci-002",
+      "type": "text",
+      "version": "002",
+      "url": "https://api.openai.com/v1/models/text-davinci-002",
+      "cost": "$0.02"
+    },
+    {
+      "name": "Curie",
+      "description": "A medium-scale API, suitable for many common use cases",
+      "id": "text-curie-001",
+      "type": "text",
+      "version": "001",
+      "url": "https://api.openai.com/v1/models/text-curie-001",
+      "cost": "$0.002"
+    },
+    {
+      "name": "Babbage",
+      "description": "A small-scale API, suitable for rapid prototyping and testing",
+      "id": "text-babbage-001",
+      "type": "text",
+      "version": "001",
+      "url": "https://api.openai.com/v1/models/text-babbage-001",
+      "cost": "$0.0005"
+    },
+    {
+      "name": "Ada",
+      "description": "A smaller-scale API, suitable for fine-tuned applications",
+      "id": "text-ada-001",
+      "type": "text",
+      "version": "001",
+      "url": "https://api.openai.com/v1/models/text-ada-001",
+      "cost": "$0.00004"
+    }
+  ]
