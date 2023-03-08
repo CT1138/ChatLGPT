@@ -1,3 +1,4 @@
-/src/Data/token.json
+/src/Data/Token.json
 /src/Data/Conversations/
 **__pycache__/
+*.bak
