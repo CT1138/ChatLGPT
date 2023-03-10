@@ -1,7 +1,7 @@
-import openai, json, os, shutil
+import openai, json, os, shutil, datetime
 
+# This function handles the OpenAI API
 def chatgpt(queries):
-    # This function handles the OpenAI API
     chat = openai.ChatCompletion.create(
         model="gpt-3.5-turbo", 
         messages=queries)
@@ -9,35 +9,39 @@ def chatgpt(queries):
     # ChatGPT sends its responses as a json object, to get our response content we have to access multiple levels and then return it:
     return chat['choices'][0]['message']['content']
 
+# This function stores and returns the conversation data.
 def conversation(query, role, ctx):
-
     # Creates a context file for the user if it doesn't exist
-    output_path = f"./Data/Conversations/{ctx.author.id}.json"
-    if not os.path.exists(output_path):
-        shutil.copyfile("./Data/ConvoTemplate.json", output_path)
-    
-    dictionary = {"role": role, "content": query}
+    today = datetime.date.today()
+    directory = f"./Data/Conversations/{ctx.channel.id}/{ctx.author.id}/"
+    outputfile = f"{directory}{today}.json"
 
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    if not os.path.exists(outputfile):
+        shutil.copyfile("./Data/ConvoTemplate.json", outputfile)
+
+    dictionary = {"role": role, "content": query}
     # Read the JSON file
-    with open(output_path, 'r') as file:
+    with open(outputfile, 'r') as file:
         data = json.load(file)
 
     # Append the input dictionary
     data.append(dictionary)
 
     # Write to the JSON file
-    with open(output_path, 'w') as file:
+    with open(outputfile, 'w') as file:
         json.dump(data, file)
     
     # Read the JSON file
-    with open(output_path, 'r') as file:
+    with open(outputfile, 'r') as file:
         context = json.load(file)
-    return context
+    return context[-20:]
         
+# Our main function; this relays the discord user message to chatGPT and back to the user
 async def chat(ctx, input):
     await ctx.defer()
     try:
-
         context = conversation(input, "user", ctx)
         response = chatgpt(context)
 
@@ -59,3 +63,4 @@ async def chat(ctx, input):
         await ctx.respond("There was an error, please contact an administrator for help!")
         print(e)
         return
+    

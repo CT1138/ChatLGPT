@@ -2,3 +2,6 @@
 /src/Data/Conversations/
 **__pycache__/
 *.bak
+src/.vscode/sftp.json
+src/Data/Token.json
+src/Data/Token.json

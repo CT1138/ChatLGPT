@@ -1,4 +1,4 @@
-import Modules.Models as Models, Modules.Reddit.Video as Video, Modules.Reddit.Images as Image, Modules.Messages as Messages, Modules.Chat as Chat,Initialize, discord, json, sys
+import Modules.Models as Models, Modules.Reddit.Video as Video, Modules.Reddit.Images as Image, Modules.Messages as Messages, Modules.Chat as Chat, Initialize, discord, json, sys
 from discord import option
 
 # Searches for and opens the data files, the program will stop if they do not exist
@@ -16,7 +16,6 @@ AImodel = [model['id'] for model in model_data]
 
 #Initialize
 client = Initialize.init(data)
-
 
 # Thread listener
 @client.event
@@ -40,7 +39,7 @@ async def chat(ctx: discord.ApplicationContext, query: str):
 @client.slash_command(description="OpenAI chatbot Integration.")
 @option("query", description="Your message to the bot")
 async def gpt(ctx: discord.ApplicationContext, query: str):
-  await ctx.defer(); await ctx.send(Models.generate_response(query))
+  await Models.davinci(query, ctx)
 
 #/info <model>
 @client.slash_command(description="Info on the AI models compatible with /gpt.")

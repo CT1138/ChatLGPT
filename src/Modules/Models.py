@@ -1,7 +1,8 @@
-import discord, openai, csv
+import discord, openai
 thread_counter = 0
 
 def generate_response(query):
+        
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=query,
@@ -14,6 +15,18 @@ def generate_response(query):
         print(f"[Davinci] Query: {query[:20]}...\nResponse: {message[:20]}...")
         return message
 
+async def davinci(query, ctx):
+        await ctx.defer()
+        response = generate_response(query)
+        if len(response) > 2000:
+            response_chunks = [response[i:i+2000] for i in range(0, len(response), 2000)]
+            for chunk in response_chunks:
+                await ctx.respond(chunk)
+                print(f"[ChatGPT] Query: {query[:20]}...\nResponse: {chunk[:20]}...")
+        else:
+            await ctx.respond(response)
+            print(f"[ChatGPT] Query: {query[:20]}...\nResponse: {response[:20]}...")
+            
 #Image Model
 async def dalle(ctx, input):
   await ctx.defer(); 
