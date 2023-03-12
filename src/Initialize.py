@@ -1,7 +1,7 @@
 import discord, openai
 
 def init(data):
-
+    """This function logs into our two main API's"""
     # Sets the API key for OpenAI
     openai.api_key = data["davinci"]
     

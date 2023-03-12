@@ -1,16 +1,16 @@
 import openai, json, os, shutil, datetime
 
-# This function handles the OpenAI API
+
 def chatgpt(queries):
+    """Main handler for the ChatGPT API"""
     chat = openai.ChatCompletion.create(
         model="gpt-3.5-turbo", 
         messages=queries)
-    
-    # ChatGPT sends its responses as a json object, to get our response content we have to access multiple levels and then return it:
     return chat['choices'][0]['message']['content']
 
-# This function stores and returns the conversation data.
 def conversation(query, role, ctx):
+    """This function handles the conversation data between the User and ChatGPT"""
+    
     # Creates a context file for the user if it doesn't exist
     today = datetime.date.today()
     directory = f"./Data/Conversations/{ctx.channel.id}/{ctx.author.id}/"
@@ -37,9 +37,9 @@ def conversation(query, role, ctx):
     with open(outputfile, 'r') as file:
         context = json.load(file)
     return context[-20:]
-        
-# Our main function; this relays the discord user message to chatGPT and back to the user
+
 async def chat(ctx, input):
+    """This function acts as the relay between the ChatGPT and Discord APIs"""
     await ctx.defer()
     try:
         context = conversation(input, "user", ctx)

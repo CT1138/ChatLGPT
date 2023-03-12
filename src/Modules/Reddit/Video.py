@@ -2,10 +2,13 @@ import requests
 import random
 
 async def reddit_video_upload(ctx, input, url):
+    """This uploads the videos to Discord"""
+
     print(f"[Reddit Video] Subreddit: {input}\nURL: {url}")
     await ctx.respond(url)
 
 async def reddit_video_main(ctx, input, quantity, limit=1000):
+    """This searches a specified subreddit for .mp4 or .gifv files and uploads them"""
     await ctx.defer()
     # Print the answer to the console
     print(f'[Reddit] {ctx.author} is scanning "{input}"')

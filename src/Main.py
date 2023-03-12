@@ -1,21 +1,26 @@
-import Modules.Models as Models, Modules.Reddit.Video as Video, Modules.Reddit.Images as Image, Modules.Messages as Messages, Modules.Chat as Chat, Initialize, discord, json, sys
+import Modules.Models as Models
+import Modules.Reddit.Video as Video
+import Modules.Reddit.Images as Image
+import Modules.Messages as Messages
+import Modules.Chat as Chat
+import Modules.Pride as Pride
+import Modules.Headpat as Headpat
+import Initialize, discord, json, sys
 from discord import option
 
 # Searches for and opens the data files, the program will stop if they do not exist
 try:
   with open("./Data/Token.json", "r") as f:
-      data = json.load(f)
-  with open('./Data/Models.json', 'r') as f:
-      model_data = json.load(f)
+    data = json.load(f)
+  with open("./Data/Flags.json", "r") as f:
+    flags = json.load(f)
 except Exception as e:
-   print(e)
-   sys.exit()
-
-AImodel = [model['id'] for model in model_data]
-
+  print(e)
+  sys.exit()
 
 #Initialize
 client = Initialize.init(data)
+Pride.flagCache()
 
 # Thread listener
 @client.event
@@ -35,17 +40,11 @@ async def ping(ctx):
 async def chat(ctx: discord.ApplicationContext, query: str):
   await Chat.chat(ctx, query)
 
-#/gpt <query> <model>
-@client.slash_command(description="OpenAI chatbot Integration.")
+#/gpt <query>
+@client.slash_command(description="OpenAI Davinci Integration.")
 @option("query", description="Your message to the bot")
 async def gpt(ctx: discord.ApplicationContext, query: str):
   await Models.davinci(query, ctx)
-
-#/info <model>
-@client.slash_command(description="Info on the AI models compatible with /gpt.")
-@option("model", description="Choose your AI model", choices=AImodel)
-async def info(ctx: discord.ApplicationContext, model: str):
-  await Models.info(ctx, model, model_data)
 
 #/draw <query>
 @client.slash_command(description="Dall-E image generation.")
@@ -53,14 +52,14 @@ async def info(ctx: discord.ApplicationContext, model: str):
 async def draw(ctx: discord.ApplicationContext, query: str):
   await Models.dalle(ctx, query)
 
-#/reddit images <subreddit> <quantity>
+#/images <subreddit> <quantity>
 @client.slash_command(description="Pull images from a subreddit.")
 @option("subreddit", description="What subreddit to scrape from? (case sensitive)")
 @option("quantity", description="How many images to download? (Maximum 6)")
 async def images(ctx: discord.ApplicationContext, subreddit: str, quantity: int):
   await Image.images(ctx, subreddit, quantity)
 
-#/reddit video <subreddit> <quantity>
+#/videos <subreddit> <quantity>
 @client.slash_command(description="Pulls a video from a subreddit.")
 @option("subreddit", description="What subreddit to scrape from? (case sensitive)")
 @option("quantity", description="How many videos to download? (Maximum 6)")
@@ -71,6 +70,17 @@ async def videos(ctx: discord.ApplicationContext, subreddit: str, quantity: int)
 @client.slash_command(description="Clears all messages.")
 async def purge(ctx, channel: discord.TextChannel):
   await Messages.purge(ctx, channel)
+
+#/headpat
+@client.slash_command(description="Everyone deserves headpats :heart:")
+async def headpat(ctx):
+  await Headpat.headpat(ctx)
+
+#/flag <flag1> <flag2> <animated>
+@client.slash_command(description="You're a boykisser!")
+@option("flag", description="What subreddit to scrape from? (case sensitive)", choices=flags)
+async def flag(ctx, flag=str):
+  await Pride.pride(ctx, flag)
 
 # Start the bot
 client.run(data["discord"])

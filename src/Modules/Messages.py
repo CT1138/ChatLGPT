@@ -1,15 +1,14 @@
 import json
 async def purge(ctx, channel):
- # Check if the user can send messages in the channel
+    """This command deletes and recreates a channel to clear its content"""
     with open("./Data/Blacklist.json", "r") as f:
       blacklist = json.load(f)
-    if not channel.permissions_for(ctx.author).send_messages:
+    if not channel.permissions_for(ctx.author).manage_channel:
         await ctx.respond("You do not have permissions to clear this channel.")
         return
     if str(channel.id) in blacklist["purgeID"]:
         await ctx.respond("This channel cannot be purged.")
         return
-
 
     # Store the channel information
     channel_name = channel.name
