@@ -11,7 +11,7 @@ from discord import option
 # Searches for and opens the data files, the program will stop if they do not exist
 try:
   with open("./Data/Token.json", "r") as f:
-    data = json.load(f)
+    token = json.load(f)
   with open("./Data/Flags.json", "r") as f:
     flags = json.load(f)
 except Exception as e:
@@ -19,14 +19,8 @@ except Exception as e:
   sys.exit()
 
 #Initialize
-client = Initialize.init(data)
+client = Initialize.init(token)
 Pride.flagCache()
-
-# Thread listener
-@client.event
-async def on_message(message):
-     return
-
 
 ###Run our command handler
 #/ping
@@ -77,10 +71,10 @@ async def headpat(ctx):
   await Headpat.headpat(ctx)
 
 #/flag <flag1> <flag2> <animated>
-@client.slash_command(description="You're a boykisser!")
-@option("flag", description="What subreddit to scrape from? (case sensitive)", choices=flags)
+@client.slash_command(description="You're all boykissers!")
+@option("flag", description="What flag?", choices=flags)
 async def flag(ctx, flag=str):
   await Pride.pride(ctx, flag)
 
 # Start the bot
-client.run(data["discord"])
+client.run(token["discord"])
