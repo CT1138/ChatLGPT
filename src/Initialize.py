@@ -10,6 +10,14 @@ def init(data):
     intents.members = True
     client = discord.Bot(intents=intents)
 
+<<<<<<< Updated upstream
+=======
+    status = Models.completions("Give me a random news headline.")
+    activity = discord.Activity(name=status, type=discord.ActivityType.watching)
+
+    client = discord.Bot(intents=intents, activity=activity)
+    
+>>>>>>> Stashed changes
     # Provide some feedback so we know the bot has connected
     @client.event
     async def on_ready():
