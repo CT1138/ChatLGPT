@@ -1,7 +1,7 @@
 import discord, openai, csv
 thread_counter = 0
 
-def generate_response(query):
+def completions(query):
         response = openai.Completion.create(
             engine="text-davinci-003",
             prompt=query,

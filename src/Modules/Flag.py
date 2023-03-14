@@ -25,8 +25,10 @@ def flagCache():
         json.dump(file_names, file)
 
 
-async def pride(ctx, flag1):
+async def pride(ctx, flag1, user):
     """Takes the user's avatar and pastes the selected pride flag behind it"""
+    if not user:
+        user = ctx.author
     flags = flag1
     if flag1 == "Random":
         with open("./Data/Flags.json", "r") as file:
@@ -34,7 +36,7 @@ async def pride(ctx, flag1):
             flags = random.choice(flagArray)
 
     # Get the user's avatar URL
-    user_avatar_url = str(ctx.author.avatar.url)
+    user_avatar_url = str(user.avatar.url)
     # Download the user's avatar
     response = requests.get(user_avatar_url)
     avatar_image = Image.open(BytesIO(response.content)).resize((100, 100)).convert('RGBA')
@@ -53,7 +55,7 @@ async def pride(ctx, flag1):
     # Overlay the avatar onto the base image
     base_image.paste(avatar_image, (50, 50), avatar_image)
     # Save the resulting image
-    imagename = f"{ctx.author.name}-{flags}"
+    imagename = f"{user.name}-{flags}"
     base_image.save(f"./Data/Images/Pride/{imagename}.png")
 
     # Send the resulting image as a message
